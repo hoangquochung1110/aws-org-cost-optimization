@@ -4,29 +4,28 @@ This project demonstrates how to provision AWS Config resources using Terraform.
 
 ## Resources Provisioned
 
-- AWS Config Configuration Recorder
-- AWS Config Delivery Channel
-- S3 Bucket for storing AWS Config findings
-- IAM Role with necessary permissions
-- AWS Config Rules for security best practices
+- AWS Config Configuration Recorder with continuous recording
+- AWS Config Delivery Channel with S3 bucket integration
+- Custom Lambda function for EBS volume type checking
+- IAM roles with least privilege permissions
+- Automated remediation using AWS Systems Manager Automation
 
 ## AWS Config Rules Included
 
-1. **EBS Volume Type Optimization** - Checks for EBS gp2 volumes and automatically remediates by converting them to gp3 volumes
-2. **EBS Volume Encryption** - Checks if EBS volumes are encrypted
-3. **S3 Bucket Public Access** - Ensures S3 buckets do not allow public read access
-4. **S3 Bucket Encryption** - Verifies S3 buckets have server-side encryption enabled
-5. **Root Account MFA** - Checks if the root account has MFA enabled
-6. **IAM User MFA** - Verifies if IAM users have MFA enabled
+1. **EBS Volume Type Optimization** - Checks for EBS gp2 volumes and automatically remediates by converting them to gp3 volumes using AWS Systems Manager Automation
+2. **EBS Volume Encryption** - Checks if EBS volumes are encrypted using AWS managed Config rule (EC2_EBS_ENCRYPTION_BY_DEFAULT)
 
 ## Components
 
-- Custom Lambda function for EBS volume type checking and remediation
-- AWS Config Configuration Recorder
-- AWS Config Delivery Channel
+- Custom Lambda function for EBS volume type checking
+- AWS Config Configuration Recorder with continuous monitoring
+- AWS Config Delivery Channel for storing configuration changes
 - S3 Bucket for storing AWS Config findings
-- IAM Role with necessary permissions
-- AWS Config Rules for security best practices
+- IAM Roles:
+  - Config Role for AWS Config service
+  - Lambda Function Role for EBS volume checking
+  - Config Remediation Role for triggering remediations
+  - SSM Automation Role for performing volume modifications
 
 ## Prerequisites
 
@@ -64,15 +63,18 @@ terraform destroy
 
 You can customize this project by:
 
-- Modifying `variables.tf` to change default values
-- Adding more AWS Config rules in `config_rules.tf`
-- Adjusting the S3 bucket lifecycle policy in `s3.tf`
+- Modifying `variables.tf` to change default values like AWS region and project name
+- Adding more AWS Config rules in the `config` module
+- Extending the Lambda function capabilities in `functions/ebs_volume_check`
+- Adjusting IAM permissions in the `iam` module
 
 ## Security Considerations
 
 - The S3 bucket is configured with encryption and public access blocking
 - IAM roles follow the principle of least privilege
 - AWS Config is set up to record all supported resource types
+- Custom remediation actions are controlled through specific IAM roles
+- Lambda function has minimal required permissions
 
 ## License
 
