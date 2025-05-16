@@ -20,12 +20,22 @@ module "iam" {
   tags         = var.tags
 }
 
+# Lambda module for EBS volume checking
+module "lambda" {
+  source = "./modules/lambda"
+
+  lambda_role_arn = module.iam.ebs_volume_check_function_role_arn
+  tags            = var.tags
+}
+
 # AWS Config module
 module "config" {
   source = "./modules/config"
 
-  project_name    = var.project_name
-  config_role_arn = module.iam.config_role_arn
-  config_bucket = var.config_bucket
-  tags            = var.tags
+  project_name               = var.project_name
+  config_role_arn           = module.iam.config_role_arn
+  ssm_automation_role_arn =  module.iam.ssm_automation_role_arn
+  config_bucket             = var.config_bucket
+  ebs_volume_check_lambda_arn = module.lambda.ebs_volume_check_lambda_arn
+  tags                      = var.tags
 }

@@ -12,11 +12,21 @@ This project demonstrates how to provision AWS Config resources using Terraform.
 
 ## AWS Config Rules Included
 
-1. **EBS Volume Encryption** - Checks if EBS volumes are encrypted
-2. **S3 Bucket Public Access** - Ensures S3 buckets do not allow public read access
-3. **S3 Bucket Encryption** - Verifies S3 buckets have server-side encryption enabled
-4. **Root Account MFA** - Checks if the root account has MFA enabled
-5. **IAM User MFA** - Verifies if IAM users have MFA enabled
+1. **EBS Volume Type Optimization** - Checks for EBS gp2 volumes and automatically remediates by converting them to gp3 volumes
+2. **EBS Volume Encryption** - Checks if EBS volumes are encrypted
+3. **S3 Bucket Public Access** - Ensures S3 buckets do not allow public read access
+4. **S3 Bucket Encryption** - Verifies S3 buckets have server-side encryption enabled
+5. **Root Account MFA** - Checks if the root account has MFA enabled
+6. **IAM User MFA** - Verifies if IAM users have MFA enabled
+
+## Components
+
+- Custom Lambda function for EBS volume type checking and remediation
+- AWS Config Configuration Recorder
+- AWS Config Delivery Channel
+- S3 Bucket for storing AWS Config findings
+- IAM Role with necessary permissions
+- AWS Config Rules for security best practices
 
 ## Prerequisites
 
